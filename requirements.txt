@@ -1,4 +1,3 @@
 manim_editor
 numba
 manim_slides[manim,manimgl]
-manta-manim-theme
