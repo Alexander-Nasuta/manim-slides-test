@@ -1,1 +1,4 @@
-manim_slides[manim,manimgl]==5.1.0
+manim_editor
+numba
+manim_slides[manim,manimgl]
+manta-manim-theme>=0.8.0

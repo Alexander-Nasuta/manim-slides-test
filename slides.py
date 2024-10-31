@@ -1,42 +1,70 @@
-from manim import *
-from manim_slides import Slide
+import manim as m
+
+from manta.color_theme.catppucin.catppuccin_mocha import CatppuccinMochaTheme
+from manta.components.neural_networks_utils import NeuralNetworkUtils
+from manta.slide_templates.minimal.minimal_slide_template import MinimalSlideTemplate
 
 
-class Introduction(Slide):
+class MyTwoHeadedNeuralNetworkAnimationScene(NeuralNetworkUtils, MinimalSlideTemplate):
+    subtitle_color = CatppuccinMochaTheme.yellow
+    title_seperator_color = CatppuccinMochaTheme.magenta
+
     def construct(self):
-        welcome = Text("This is the Manim Slides starter")
-        square = Square(color=BLUE)
-        dot = Dot(color=RED).shift(RIGHT + UP)
+        two_headed_nn = self.two_headed_network()
 
-        self.play(FadeIn(welcome))
-        self.next_slide()
-
-        self.wipe(welcome, square)
-        self.play(FadeIn(dot))
-
-        self.next_slide(loop=True)
         self.play(
-            MoveAlongPath(dot, square, rate_func=linear), run_time=2
+            self.set_title_row(
+                title="NeuralNetworkUtils",
+                seperator=": ",
+                subtitle="two_headed_neural_network_forward_animation",
+            ),
+            m.FadeIn(two_headed_nn),
         )
 
-class WithTeX(Slide):
-    def construct(self):
-        tex, text = VGroup(
-            Tex(r"You can also use \TeX, e.g., $\cos\theta=1$"),
-            Text("which does not render like plain text"),
-        ).arrange(DOWN)
+        self.play(
+            self.two_headed_neural_network_forward_animation(
+                two_headed_nn,
+                color=self.cyan
+            ),
+        )
 
-        self.play(FadeIn(tex))
-        self.next_slide()
+        self.play(
+            m.Transform(
+                two_headed_nn,
+                self.two_headed_network(
+                    shared_network_kwargs={
+                        "input_layer_dim": 12,
+                        "hidden_layer_dim": 10,
+                        "hidden_layer_n": 3,
+                        "output_layer_dim": 9,
+                    },
+                    shared_network_color=self.green,
+                    top_head_network_kwargs={
+                        "input_layer_dim": 4,
+                        "hidden_layer_dim": 3,
+                        "hidden_layer_n": 2,
+                        "output_layer_dim": 2,
+                    },
+                    top_head_network_color=self.cyan,
+                    bottom_networks_kwargs={
+                        "input_layer_dim": 2,
+                        "hidden_layer_dim": 2,
+                        "hidden_layer_n": 3,
+                        "output_layer_dim": 2,
+                    },
+                    bottom_networks_color=self.magenta,
+                )
+            )
+        )
 
-        self.play(FadeIn(text, shift=DOWN))
+        self.play(
+            self.two_headed_neural_network_forward_animation(
+                two_headed_nn,
+                color=self.green,
+                run_time=2.0
+            ),
+        )
 
 
-class Outro(Slide):
-    def construct(self):
-        learn_more = VGroup(
-            Text("Learn more about Manim Slides:"),
-            Text("https://manim-slides.eertmans.be"),
-        ).arrange(DOWN)
-
-        self.play(FadeIn(learn_more))
+if __name__ == '__main__':
+    MyTwoHeadedNeuralNetworkAnimationScene.render_video_medium()
