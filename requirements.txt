@@ -1,4 +1,4 @@
 manim_editor
 numba
 manim_slides[manim,manimgl]
-manta-manim-theme>=0.8.0
+manta-manim-theme
