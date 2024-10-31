@@ -92,7 +92,7 @@ jobs:
     - name: Install Python dependencies
       run: pip install -r requirements.txt
     - name: Update Manim
-      run: pip install -U requirements.txt
+      run: pip install -U manim
 
     - name: Build HTML
       run: |
